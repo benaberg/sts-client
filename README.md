@@ -1,2 +1,2 @@
 # sts-client
-Sauna Temperature Sensor (STS) Client
+Implementation of the Sauna Temperature Sensor (STS) client using an ESP32-C3.
