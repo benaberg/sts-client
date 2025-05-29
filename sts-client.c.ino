@@ -7,7 +7,8 @@
 
 #define SENSOR_PIN 8
 #define uS_TO_S_FACTOR 1000000ULL  // Conversion factor for micro seconds to seconds
-#define TIME_TO_SLEEP  60          // Seconds to sleep
+#define TIME_TO_SLEEP 60           // Seconds to sleep
+#define WIFI_TIMEOUT 30000         // WIFI connection timeout
 
 #define WIFI_SSID "FIXME"
 #define WIFI_PASSWORD "FIXME"
@@ -27,9 +28,15 @@ void setup() {
   sensors.begin();
   sensors.setResolution(sensorAddress, 11);
 
+  long time = millis();
+
   // Connect to WIFI
   wifiMulti.addAP(WIFI_SSID, WIFI_PASSWORD);
   while (wifiMulti.run() != WL_CONNECTED) {
+    if (millis() - time > WIFI_TIMEOUT) {
+      Serial.println("WIFI connection attempt timed out.");
+      break;
+    }
     Serial.println("Waiting for WIFI connection...");
     delay(500);
   }
